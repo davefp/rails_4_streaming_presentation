@@ -125,6 +125,12 @@ class: center, middle
 # Rails 4 Streaming API
 [http://theflyingdeveloper.com/rails_4_streaming_presentation]()
 
+???
+
+Rails 4 introduced a new streaming API.
+I'm going to talk about it.
+Right now.
+
 ---
 
 class: middle
@@ -248,6 +254,7 @@ end
 The content type needs to be `text/event-stream`.
 We then subscribe to the named redis pubsub group.
 When an event is fired, we write it out to the stream.
+
 Make sure that the stream is closed when we're done.
 There will be an exception thrown when the client disconnects.
 
@@ -310,6 +317,8 @@ class: center, middle
 
 ---
 
+class: inverse
+
 # Important Notes
 
 * Enable concurrent connections in dev mode
@@ -317,6 +326,10 @@ class: center, middle
 * Use a multi-threaded app server. [Puma](http://puma.io/) is a good choice
 
 * IE doesn't support Server Sent Events, because it's shite. Use a good browser instead
+
+???
+
+These little things are easy to forget, but things will fall apart very quickly if they're not set up correctly.
 
 ---
 
