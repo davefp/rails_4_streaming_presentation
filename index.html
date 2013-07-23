@@ -123,6 +123,7 @@
 class: center, middle
 
 # Rails 4 Streaming API
+[http://theflyingdeveloper.com/rails_4_streaming_presentation]()
 
 ---
 
@@ -136,10 +137,21 @@ class MyController < ActionController::Base
     100.times {
       response.stream.write "hello world\n"
     }
+  ensure
     response.stream.close
   end
 end
 ```
+
+???
+
+Add `include ActionCongroller::Live` to any controller.
+
+Bam! Now each of your controler methods can stream responses.
+
+Call `response.stream.write` when you want to write.
+
+Make sure to call  `response.stream.close` when you're done.
 
 ---
 
@@ -147,15 +159,20 @@ class: center, middle
 
 # That was easy
 
+???
+
+That's basically everything there is to know about the mechanics of streaming in Rails 4
+
 ---
 
 class: center, middle
 
 # Let's do something useful with it
+# [http://github.com/davefp/crier]()
 
----
-class: center, middle, large
-[http://github.com/davefp/crier]()
+???
+
+Crier is a project I started to learn more about ruby 2.0, Rails 4, and streaming.
 
 ---
 
@@ -169,7 +186,8 @@ class: center, middle, large
 
 ???
 
-We're going to be looking at Redis' pub-sub functionality. It allows us to subscribe to an event channel and register a callback where we can actually do stuff
+We're going to be looking at Redis' pub-sub functionality.
+It allows us to subscribe to an event channel and register a callback where we can actually do stuff.
 
 In our case, we're simply going to forward the event to the client that's connected to our stream using Server Sent Events.
 
@@ -178,10 +196,12 @@ In our case, we're simply going to forward the event to the client that's connec
 class: center, middle
 
 # Server Sent Events
+(SSEs)
 
 ???
 
-SSEs are a standard (if little known) method of sending information one-way over an HTTP stream. They're websockets' little brother.
+SSEs are a standard (if little known) method of sending information one-way over an HTTP stream.
+They're websockets' little brother.
 
 ---
 
@@ -198,7 +218,11 @@ data: "{\"id\":28,\"component_id\":2,
 
 ???
 
-Options are up top (We're using 'event' here), followed by a string of data. We're passing JSON here. Messages are delimited by a pair of newline characters
+This is one of Crier's SSEs
+
+Any options are up top (we're not using any here), followed by a string of data.
+We're passing JSON here.
+Messages are delimited by a pair of newline characters
 
 ---
 
@@ -247,10 +271,17 @@ class ComponentStatusTransition < ActiveRecord::Base
 end
 ```
 
+Just so you can see the other side of things, here's the publishing code.
+It's in an `after_create` hook on the transition log model.
+
 ---
 class: center, middle
 
 # Demo
+
+???
+
+(Demo starting the server, curling for the stream, and then hitting the API with updates)
 
 ---
 
@@ -269,7 +300,8 @@ jQuery(document).ready(function() {
 
 ???
 
-On our page, we create a new EventSource pointed at the url we're exposing our streaming endpoint on, in this case `/stream`. We then register a callback function that fires whenever a message named 'update' arrives
+On our page, we create a new EventSource pointed at the url we're exposing our streaming endpoint on, in this case `/stream`.
+We then register a callback function that fires whenever a message named 'update' arrives.
 
 ---
 class: center, middle
@@ -284,6 +316,8 @@ class: center, middle
 
 * Use a multi-threaded app server. [Puma](http://puma.io/) is a good choice
 
+* IE doesn't support Server Sent Events, because it's shite. Use a good browser instead
+
 ---
 
 .center[
@@ -296,6 +330,7 @@ class: center, middle
 * [Is It Live?](http://tenderlovemaking.com/2012/07/30/is-it-live.html) - Aaron Patterson's intro to Rails 4 Streaming
 
 * [Crier](http://github.com/davefp/crier) - My streaming app
+
 ]
 .pull-right[
 ## Me
