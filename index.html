@@ -151,9 +151,9 @@ end
 
 ???
 
-Add `include ActionCongroller::Live` to any controller.
+Add `include ActionController::Live` to any controller.
 
-Bam! Now each of your controler methods can stream responses.
+Bam! Now each of your controller methods can stream responses.
 
 Call `response.stream.write` when you want to write.
 
@@ -314,6 +314,10 @@ We then register a callback function that fires whenever a message named 'update
 class: center, middle
 
 # More Demo
+
+???
+
+(Demo the page updating auto-magically when an update is sent)
 
 ---
 
